@@ -18,5 +18,6 @@ app.use(express.json())
 //teste home
 app.get('/', (_, res) => res.send('teste'))
 
-
-app.listen(3000, () => console.log('App rodando na porta 3000'))
+mongoose.connect(process.env.MONGODB_STRING)
+.then(() => app.listen(3000, () => console.log('App rodando na porta 3000')))
+.catch((err) => console.log(err))
