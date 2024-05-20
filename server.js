@@ -6,7 +6,7 @@ require('dotenv').config({path: './config/.env'})
 const express = require('express')
 const app = express()
 
-const mongoose = require('mongoose')
+const conexao = require('./db/conexao')
 
 const cors = require('cors')
 app.use(cors())
@@ -15,9 +15,9 @@ app.use(cors())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
+conexao()
+
 //teste home
 app.get('/', (_, res) => res.send('teste'))
 
-mongoose.connect(process.env.MONGODB_STRING)
-.then(() => app.listen(3000, () => console.log('App rodando na porta 3000')))
-.catch((err) => console.log(err))
+app.listen(3000, () => console.log('Rodando'))
