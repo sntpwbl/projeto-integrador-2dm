@@ -34,6 +34,7 @@ exports.updatePlano = async(req, res) =>{
     try{
         const plano = await Plano.findByIdAndUpdate(req.params.id, req.body, {new: true})
         return res.json(plano)
+        res.status(200).json({message: "Plano atualizado com sucesso."})
     }
     catch(error){
         res.status(400).json({message: error.message})
@@ -45,6 +46,7 @@ exports.deletePlano = async(req, res) => {
     try{
         const plano = await Plano.findByIdAndDelete(req.params.id)
         return res.json(plano)
+        res.status(200).json({message: "Plano deletado com sucesso."})
     }
     catch(error){
         res.status(400).json({message: error.message})
