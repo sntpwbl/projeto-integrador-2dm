@@ -1,5 +1,5 @@
 const Pessoa = require('../model/Pessoa')
-const Plano = require('../model/Plano').planoModel
+
 
 exports.lerTodasPessoas = async (req, res)  =>{
     try{
@@ -34,11 +34,7 @@ exports.inserirNovaPessoa = async (req, res) =>{
                 cidade: req.body.cidade,
                 cep: req.body.cep
             },
-            plano: {
-                mensalidade: req.body.mensalidade,
-                redes_de_academia: req.body.redes_de_academia,
-                descricao: req.body.descricao
-            }
+            plano: req.body.plano
 
         }
         await Pessoa.create(novaPessoa)

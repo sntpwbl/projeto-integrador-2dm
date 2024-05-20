@@ -1,9 +1,9 @@
 const router = require('express').Router()
 
 const planoRotas = require('./planoRotas')
-// const usuarioRotas = require('./usuarioRotas')
+const pessoaRotas = require('./pessoaRotas')
 
 router.use('/planos', planoRotas)
-// router.use('/usuarios', usuarioRotas)
+router.use('/pessoas', pessoaRotas)
 
 module.exports = router
