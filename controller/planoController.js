@@ -29,3 +29,24 @@ exports.inserirNovoPlano = async(req, res)=>{
         res.status(500).json({message: err.message})
     }
 }
+
+exports.updatePlano = async(req, res) =>{
+    try{
+        const plano = await Plano.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        return res.json(plano)
+    }
+    catch(error){
+        res.status(400).json({message: error.message})
+    }
+ 
+}
+ 
+exports.deletePlano = async(req, res) => {
+    try{
+        const plano = await Plano.findByIdAndDelete(req.params.id)
+        return res.json(plano)
+    }
+    catch(error){
+        res.status(400).json({message: error.message})
+    }
+}
