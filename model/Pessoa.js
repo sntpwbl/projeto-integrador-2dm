@@ -17,4 +17,6 @@ const pessoaSchema = mongoose.Schema({
     plano: {planoSchema}
 })
 
-module.exports = pessoaSchema
+const pessoaModel = mongoose.model('pessoa', pessoaSchema)
+
+module.exports = pessoaModel

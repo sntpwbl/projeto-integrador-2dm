@@ -45,3 +45,21 @@ exports.inserirNovaPessoa = async (req, res) =>{
 
 }
 
+exports.atualizarPessoa = async(req, res) =>{
+    try {
+        const pessoaAtualizada = req.body
+        await Pessoa.findByIdAndUpdate(req.params.id, pessoaAtualizada)
+        res.status(200).json({message: 'Usuário atualizada com sucesso.', result: pessoaAtualizada})
+    } catch (err) {
+        res.status(500).json({message: message.err})
+    }
+}
+
+exports.deletarPessoa = async(req, res) =>{
+    try {
+        const pessoaDeletada = await Pessoa.findByIdAndDelete(req.params.id)
+        res.status(200).json({message: 'Usuário deletado com sucesso.', result: pessoaDeletada})
+    } catch (err) {
+        res.status(500).json({message: message.err})
+    }
+}
