@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const planoSchema = require('./Plano')
+const planoSchema = require('./Plano').planoSchema
 
 const pessoaSchema = mongoose.Schema({
     nome: {type: String, required: true},
