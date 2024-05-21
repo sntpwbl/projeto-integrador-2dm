@@ -1,4 +1,3 @@
-const Pessoa = require('../model/Pessoa')
 const Plano = require('../model/Plano').planoModel
 
 exports.lerTodosPlanos = async(_, res)=>{
@@ -25,8 +24,9 @@ exports.inserirNovoPlano = async(req, res)=>{
 }
 
 exports.updatePlano = async(req, res) =>{
+    
     try{
-        const plano = await Plano.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        const plano = await Plano.findByIdAndUpdate(id, req.body, {new: true})
         res.status(200).json({message: "Plano atualizado com sucesso.", result: plano})
     }
     catch(error){

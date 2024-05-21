@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const pessoaController = require('../controller/pessoaControler')
 
-router.get('/',    (req, res) => pessoaController.lerTodasPessoas  (req, res))
+router.get('/',    (_, res) => pessoaController.lerTodasPessoas  (_, res))
 
 router.get('/:id', (req, res) => pessoaController.lerPessoaId      (req, res))
 
