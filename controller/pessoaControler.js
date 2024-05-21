@@ -1,5 +1,6 @@
 const Pessoa = require('../model/Pessoa')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 exports.lerTodasPessoas = async (_, res)  =>{
     try{
@@ -66,5 +67,23 @@ exports.deletarPessoa = async(req, res) =>{
         res.status(200).json({message: 'Usuário deletado com sucesso.', result: pessoaDeletada})
     } catch (err) {
         res.status(500).json({message: err.message})
+    }
+}
+
+exports.realizarLogin = async(req, res)=>{
+    try {
+        const usuario = await Pessoa.findOne({email: req.body.email})
+
+        if(!usuario) return res.status(401).json({statusCode: 401, message: "Email não foi cadastrado."})
+        
+        const senhaValida = await bcrypt.compare(req.body.senha, usuario.senha)
+        
+        if(!senhaValida) return res.status(401).json({statusCode: 401, message: 'Senha não corresponde ao email digitado.'})
+
+        const token = jwt.sign({email: usuario.email}, process.env.SECRET)
+        res.status(200).json({message: 'Login realizado com sucesso.', data:{token}})
+        
+    } catch (err) {
+       res.status(500).json({message: err.message}) 
     }
 }

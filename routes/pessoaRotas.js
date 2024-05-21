@@ -5,7 +5,9 @@ router.get('/',    (_, res) => pessoaController.lerTodasPessoas  (_, res))
 
 router.get('/:id', (req, res) => pessoaController.lerPessoaId      (req, res))
 
-router.post('/',   (req, res) => pessoaController.inserirNovaPessoa(req, res))
+router.post('/registrar',   (req, res) => pessoaController.inserirNovaPessoa(req, res))
+
+router.post('/login', (req, res) => pessoaController.realizarLogin(req, res))
 
 router.put('/:id',   (req, res)  => pessoaController.atualizarPessoa  (req, res))
 
