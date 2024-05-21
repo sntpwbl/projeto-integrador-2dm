@@ -32,6 +32,8 @@ exports.inserirNovaPessoa = async (req, res) =>{
             endereco: req.body.endereco,
             plano: req.body.plano
         }
+
+        if(!novaPessoa.nome || !novaPessoa.sobrenome || !novaPessoa.email || !novaPessoa.senha || !novaPessoa.telefone || !novaPessoa.bio || !novaPessoa.endereco || !novaPessoa.plano) return res.status(422).json({message: 'Está faltando um campo obrigatorio'})
         await Pessoa.create(novaPessoa)
         res.status(201).json({message: "Cliente inserido com sucesso", result: novaPessoa})
     }catch(erro){
