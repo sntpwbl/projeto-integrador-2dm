@@ -24,23 +24,18 @@ exports.inserirNovaPessoa = async (req, res) =>{
     try{
         const novaPessoa = {
             nome: req.body.nome,
+            sobrenome: req.body.sobrenome,
             email: req.body.email,
+            senha: req.body.senha,
             telefone: req.body.telefone,
-            endereco: {
-                rua: req.body.rua,
-                numero: req.body.numero,
-                bairro: req.body.bairro,
-                estado: req.body.estado,
-                cidade: req.body.cidade,
-                cep: req.body.cep
-            },
+            bio: req.body.bio,
+            endereco: req.body.endereco,
             plano: req.body.plano
-
         }
         await Pessoa.create(novaPessoa)
         res.status(201).json({message: "Cliente inserido com sucesso", result: novaPessoa})
     }catch(erro){
-        res.status(500).json({message: "Erro ao inserir cliente"})
+        res.status(500).json({message: erro.message})
     }
 
 }
