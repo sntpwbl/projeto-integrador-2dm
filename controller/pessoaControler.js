@@ -1,5 +1,5 @@
 const Pessoa = require('../model/Pessoa')
-
+const bcrypt = require('bcrypt')
 
 exports.lerTodasPessoas = async (req, res)  =>{
     try{
@@ -22,11 +22,14 @@ exports.lerPessoaId = async (req , res) =>{
 
 exports.inserirNovaPessoa = async (req, res) =>{
     try{
+
+        const hashSenha = await bcrypt.hash(req.body.senha, 10)
+        
         const novaPessoa = {
             nome: req.body.nome,
             sobrenome: req.body.sobrenome,
             email: req.body.email,
-            senha: req.body.senha,
+            senha: hashSenha,
             telefone: req.body.telefone,
             bio: req.body.bio,
             endereco: req.body.endereco,
