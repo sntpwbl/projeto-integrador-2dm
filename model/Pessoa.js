@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const {planoSchema} = require('./Plano')
+
 
 const pessoaSchema = mongoose.Schema({
     nome: {type: String, required: true},
@@ -14,7 +14,17 @@ const pessoaSchema = mongoose.Schema({
         cidade: String,
         cep: String
     }, 
-    plano: planoSchema
+    plano: {
+        mensalidade: Number,
+        redes_de_academia: String,
+        descricao: {
+            modalidade:       String,
+            avaliacao_fisica: String,
+            nutricionista:    String,
+            personal_trainer: String,
+            produtos_Growth:  String
+        }
+    }
 })
 
 const pessoaModel = mongoose.model('pessoa', pessoaSchema)
