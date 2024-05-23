@@ -1,13 +1,19 @@
-require('dotenv').config({path: './config/.env'})
-const mongoose = require('mongoose')
+// Importa a biblioteca dotenv e carrega as variáveis de ambiente do arquivo .env
+require("dotenv").config({ path: "./config/.env" });
+// Importa a biblioteca mongoose para interagir com o MongoDB
+const mongoose = require("mongoose");
 
-const conexao = async() =>{
-    try {
-        await mongoose.connect(process.env.MONGODB_STRING)
-        .then(() => console.log('Banco conectado'))
-    } catch (err) {
-        console.log(err)
-    }
-}
+// Função assíncrona para estabelecer a conexão com o banco de dados MongoDB
+const conexao = async () => {
+  try {
+    // Tenta estabelecer a conexão com o banco de dados MongoDB usando a URL fornecida no arquivo .env
+    await mongoose
+      .connect(process.env.MONGODB_STRING)
+      .then(() => console.log("Banco conectado"));
+  } catch (err) {
+    // Se ocorrer algum erro durante a conexão, exibe o erro no console
+    console.log(err);
+  }
+};
 
-module.exports = conexao
+module.exports = conexao;
