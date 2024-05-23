@@ -1,89 +1,65 @@
-const Pessoa = require('../model/Pessoa')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+// Importa o modelo Pessoa para interagir com o banco de dados
+const Pessoa = require("../model/Pessoa")
 
-exports.lerTodasPessoas = async (_, res)  =>{
-    try{
-        const pessoas = await Pessoa.find()
-        res.status(200).json(pessoas)
-    }catch(erro){
-        res.status(500).json({message: "Erro ao encontrar clientes"})
-    }
+//Função para ler a pessoa especifica pelo seu Id
+exports.lerPessoaId = async (req, res) => {
+  try {
+    // Busca uma pessoa pelo ID fornecido nos parâmetros da solicitação, excluindo a senha
+    const pessoa = await Pessoa.findById(req.params.id, "-senha")
 
+    // Verifica se a pessoa foi encontrada
+    if (!pessoa) throw new Error("Usuário não foi encontrado.")
+
+    // Retorna um status 200 (OK) e a pessoa encontrada em formato JSON
+    res.status(200).json(pessoa)
+  } catch (erro) {
+    // Se o erro que aconteceu for o CastError, retorna uma mensagem personalizada de erro
+    if(erro.name === 'CastError') return res.status(400).json({resultado: 'ID de usuário é inválido.'})
+    // Em caso de erro, retorna um status dinâmico (404) (Não encontrado) com uma mensagem
+    res.status(404).json({ resultado: erro.message })
+  }
 }
 
-exports.lerPessoaId = async (req , res) =>{
-    try{
-        const pessoa = await pessoa.findById(req.params.id)
-        if(!pessoa) res.status(404).json({message: 'Usuário não foi encontrado.'})
-        res.status(200).json(pessoa)
-    }catch(erro){
-        res.status(500).json({message: "Erro ao encontrar cliente"})
-    }
+
+// Função para atualizar os dados de uma pessoa pelo ID
+exports.atualizarPessoa = async (req, res) => {
+  try {
+    if(req.body.senha) throw new Error('Rota para alteração de senha incorreta.')
+    
+    // Atualiza os dados da pessoa com base no ID fornecido
+    const pessoaAtualizada = await Pessoa.findByIdAndUpdate(req.params.id, req.body)
+
+    // Verifica se a pessoa foi encontrada e atualizada
+    if (!pessoaAtualizada) throw new Error("Usuário não foi encontrado." )
+
+    // Retorna um status 200 (OK) com uma mensagem de sucesso e os dados da pessoa atualizada
+    res.status(200).json({resultado: "Usuário atualizado com sucesso."})
+
+  } catch (erro) {
+    // Se o erro que aconteceu for o CastError, retorna uma mensagem personalizada de erro
+    if(erro.name === 'CastError') return res.status(400).json({resultado: 'ID de usuário é inválido.'})
+    if(erro.message === 'Rota para alteração de senha incorreta.') return res.status(403).json({result: erro.message})
+    // Em caso de erro, retorna um status 404 (Não encontrado) com uma mensagem de erro
+    res.status(404).json({ resultado: erro.message })
+  }
 }
 
-exports.inserirNovaPessoa = async (req, res) =>{
-    try{
+// Função para deletar uma pessoa pelo ID
+exports.deletarPessoa = async (req, res) => {
+  try {
+    // Deleta a pessoa com base no ID fornecido
+    const pessoaDeletada = await Pessoa.findByIdAndDelete(req.params.id)
 
-        const hashSenha = await bcrypt.hash(req.body.senha, 10)
-        
-        const novaPessoa = {
-            nome: req.body.nome,
-            sobrenome: req.body.sobrenome,
-            email: req.body.email,
-            senha: hashSenha,
-            telefone: req.body.telefone,
-            bio: req.body.bio,
-            endereco: req.body.endereco,
-            plano: req.body.plano
-        }
+    // Verifica se a pessoa foi encontrada e deletada
+    if (!pessoaDeletada) throw new Error("Usuário não foi encontrado." )
 
-        if(!novaPessoa.nome || !novaPessoa.sobrenome || !novaPessoa.email || !novaPessoa.senha) return res.status(422).json({message: 'Está faltando um campo obrigatorio'})
-        
-        await Pessoa.create(novaPessoa)
-        res.status(201).json({message: "Cliente inserido com sucesso", result: novaPessoa})
-    }catch(erro){
-        res.status(500).json({message: erro.message})
-    }
+    // Retorna um status 200 (OK) com uma mensagem de sucesso e os dados da pessoa deletada
+    res.status(200).json({resultado: "Usuário deletado com sucesso."})
 
-}
-
-exports.atualizarPessoa = async(req, res) =>{
-    try {
-        const pessoaAtualizada = await Pessoa.findByIdAndUpdate(req.params.id, req.body)
-
-        if(!pessoaAtualizada) res.status(404).json({message: 'Usuário não foi encontrado.'})
-        res.status(200).json({message: 'Usuário atualizada com sucesso.', result: pessoaAtualizada})
-    } catch (err) {
-        res.status(500).json({message: message.err})
-    }
-}
-
-exports.deletarPessoa = async(req, res) =>{
-    try {
-        const pessoaDeletada = await Pessoa.findByIdAndDelete(req.params.id)
-
-        if(!pessoaDeletada) res.status(404).json({message: 'Usuário não foi encontrado.'})
-        res.status(200).json({message: 'Usuário deletado com sucesso.', result: pessoaDeletada})
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-}
-
-exports.realizarLogin = async(req, res)=>{
-    try {
-        const usuario = await Pessoa.findOne({email: req.body.email})
-
-        if(!usuario) return res.status(401).json({statusCode: 401, message: "Email não foi cadastrado."})
-        
-        const senhaValida = await bcrypt.compare(req.body.senha, usuario.senha)
-        
-        if(!senhaValida) return res.status(401).json({statusCode: 401, message: 'Senha não corresponde ao email digitado.'})
-
-        const token = jwt.sign({email: usuario.email}, process.env.SECRET)
-        res.status(200).json({message: 'Login realizado com sucesso.', data:{token}})
-        
-    } catch (err) {
-       res.status(500).json({message: err.message}) 
-    }
+  } catch (erro) {
+    // Se o erro que aconteceu for o CastError, retorna uma mensagem personalizada de erro
+    if(erro.name === 'CastError') return res.status(400).json({resultado: 'ID de usuário é inválido.'})
+    // Em caso de erro, retorna um status 404 (Não encontrado) com uma mensagem de erro
+    res.status(404).json({ resultado: erro.message })
+  }
 }
