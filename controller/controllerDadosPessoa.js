@@ -34,16 +34,15 @@ exports.cadastrarPessoa = async (req, res) => {
   
       // Cria uma nova pessoa no banco de dados
       await Pessoa.create(novaPessoa)
-  
-      // Retorna um status 201 (Created) com uma mensagem de sucesso e os dados da nova pessoa
-      res.status(201).json({ resultado: "Cliente inserido com sucesso", data: novaPessoa })
+
+      // Retorna um status 201 (Created) com uma mensagem de sucesso
+      res.status(201).json({ resultado: "Pessoa cadastrada com sucesso."})
   
     } catch (erro) {
       // Em caso de erro, retorna um status 422 (Entidade não processável) com uma mensagem de erro
       res.status(422).json({ resultado: erro.message })
     }
   }
-
 
 // Função para realizar o login de uma pessoa
 exports.realizarLogin = async (req, res) => {
@@ -68,7 +67,7 @@ exports.realizarLogin = async (req, res) => {
       const token = jwt.sign({ id: usuario._id }, process.env.SECRET)
   
       // Retorna um status 200 (OK) com o ID do usuário e o token
-      res.status(200).json({ id: usuario._id, data: { token } })
+      res.status(200).json({ data: { token } })
   
     } catch (erro) {
       // Se o usuário não enviou o email ou senha, retorna um status 400 (Bad Request) com mensagem
@@ -97,8 +96,8 @@ exports.alterarSenha = async(req, res)=>{
       pessoa.senha = senhaCriptografada
 
       // Atualiza documento do usuário no banco com a nova senha
-      const pessoaAtualizada = await Pessoa.updateOne({email: req.body.email}, pessoa)
-      return res.status(200).json({resultado: pessoaAtualizada})
+      await Pessoa.updateOne({email: req.body.email}, pessoa)
+      return res.status(200).json({resultado: "Senha alterada com sucesso."})
     } catch (erro) {
       // Erro caso email ou senha não tenham sido enviados (400 - Bad Request)
       if(erro.message==='Campo senha é obrigatório.' || erro.message==='Campo email é obrigatório.') return res.status(400).json({resultado: erro.message})
