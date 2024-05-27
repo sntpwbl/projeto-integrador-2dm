@@ -12,7 +12,7 @@ const conexao = async () => {
       .then(() => console.log("Banco conectado"));
   } catch (err) {
     // Se ocorrer algum erro durante a conexão, exibe o erro no console
-    console.log(err);
+    console.log(err.message);
   }
 };
 

@@ -67,7 +67,7 @@ exports.realizarLogin = async (req, res) => {
       const token = jwt.sign({ id: usuario._id }, process.env.SECRET)
   
       // Retorna um status 200 (OK) com o ID do usuário e o token
-      res.status(200).json({ data: { token } })
+      res.status(200).json({ token })
   
     } catch (erro) {
       // Se o usuário não enviou o email ou senha, retorna um status 400 (Bad Request) com mensagem
