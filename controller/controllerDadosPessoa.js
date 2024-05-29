@@ -64,7 +64,7 @@ exports.realizarLogin = async (req, res) => {
       if (!senhaValida) throw new Error("Senha é inválida.")
   
       // Gera um token de autenticação usando jwt
-      const token = jwt.sign({ id: usuario._id }, process.env.SECRET)
+      const token = jwt.sign({ id: usuario._id }, process.env.SECRET, {expiresIn: '1d'})
   
       // Retorna um status 200 (OK) com o ID do usuário e o token
       res.status(200).json({ token })
