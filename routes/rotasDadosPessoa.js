@@ -11,6 +11,6 @@ router.post('/cadastrar', (req, res) => dadosController.cadastrarPessoa(req, res
 router.post('/login', (req, res) => dadosController.realizarLogin(req, res))
 
 //Responsável pela alteração da senha do usuário
-router.put('/senha', (req, res) => dadosController.alterarSenha(req, res))
+router.patch('/senha', (req, res) => dadosController.alterarSenha(req, res))
 
 module.exports = router

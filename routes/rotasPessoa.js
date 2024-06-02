@@ -9,7 +9,7 @@ const verificarToken = require('../middleware/verificarToken')
 router.get('/:id', verificarToken, (req, res) => pessoaController.lerPessoaId(req, res))
 
 //Responsável por atualizar as informações do usuário a partir do ID, verificando se seu token é válido
-router.put('/:id', verificarToken, (req, res) => pessoaController.atualizarPessoa(req, res))
+router.patch('/:id', verificarToken, (req, res) => pessoaController.atualizarPessoa(req, res))
 
 //Responsável por excluir o usuário do banco a partir do ID, verificando se seu token é válido
 router.delete('/:id', verificarToken, (req, res) => pessoaController.deletarPessoa(req, res))
