@@ -35,6 +35,7 @@
 
 <strong>PATCH /user/:id</strong>: Atualiza dados específicos de um usuário:<br>
 <img src="./imgs/alteraruser.png" alt="patch">
+Apesar da imagem mostrar uma requisição PUT, use PATCH.
 
 <strong>DELETE /user/:id</strong>: Deleta usuário do sistema:<br>
 <img src="./imgs/deletaruser.png" alt="delete">
