@@ -14,7 +14,7 @@ const pessoaSchema = mongoose.Schema({
     }, 
     plano: {
         nome: String,
-        mensalidade: Number,
+        mensalidade: String,
         beneficios: []
     }
 })
